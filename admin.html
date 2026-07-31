@@ -25,6 +25,7 @@
     <script>
         const supabaseUrl = 'https://sqavlyzqaxutbwqdytic.supabase.co';
         const supabaseKey = 'sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC';
+        const SUPABASE_BUCKET = 'property- images';
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         async function saveProperty() {
@@ -33,27 +34,27 @@
                 const imageFile = document.getElementById('image').files[0];
 
                 if (!imageFile) {
-                    alert("please select image");
+                    alert('Please select an image');
                     return;
                 }
 
-                const fileName = Date.now() + "-" + imageFile.name;
+                const fileName = `${Date.now()}-${imageFile.name}`;
 
                 const { error: uploadError } = await supabaseClient.storage
-                    .from("Property-images")
+                    .from(SUPABASE_BUCKET)
                     .upload(fileName, imageFile);
 
                 if (uploadError) {
-                    alert("Upload Error = " + uploadError.message);
+                    alert(`Upload Error = ${uploadError.message}`);
                     return;
                 }
 
-                const { data: urlData, error: urlError } = supabaseClient.storage
-                    .from("Property-images")
+                const { data: urlData, error: urlError } = await supabaseClient.storage
+                    .from(SUPABASE_BUCKET)
                     .getPublicUrl(fileName);
 
                 if (urlError) {
-                    alert("URL Error = " + urlError.message);
+                    alert(`URL Error = ${urlError.message}`);
                     return;
                 }
 
@@ -71,12 +72,12 @@
                     .select();
 
                 if (error) {
-                    alert("Error = " + error.message);
+                    alert(`Error = ${error.message}`);
                 } else {
-                    alert("property inserted successfully");
+                    alert('Property inserted successfully');
                 }
             } catch (err) {
-                alert("ERROR: " + err.message);
+                alert(`ERROR: ${err.message}`);
             }
         }
     </script>
