@@ -33,45 +33,68 @@ DOCTYPE html>
             "sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC";
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-
-
-        const imageFile =
-            document.getElementById("image").files[0]
-
-        alert(imageFile ? imageFile.name :
-            "NO FILE SELECTED")
         async function saveProperty() {
             alert("step1");
 
+
             const title = document.getElementById('title').value;
 
-            alert("step2 = " + title);
+            const imageFile =
+                document.getElementById("image").files[0]
+            if (!imageFile.name); {
 
-            alert("step3 before supabase call");
+                alert("please select image");
+                return;
+            }
+
+            alert(imagefile.name);
+
+            const fileName = Date.now() + "-" + imageFile.name;
+
+            const { error: uploadError } = await supabaseClient.storage
+                .from("Property-images")
+                .upload(fileName, imageFile);
+
+            if (uploadError) {
+                alert("Upload Error = " + uploadError.message);
+                return;
+            }
+
+            const { data: urlData } = supabaseClient.storage
+                .from("Property-images")
+                .getPublicUrl(fileName);
+
+            const imageUrl = urlData.publicUrl;
+
+            alert("IMAGE UPLOADED");
+
+
+
+
+            alert(imageFile.name);
 
             const { data, error } = await supabaseClient
                 .from('properties')
                 .insert([
                     {
                         title: title,
-                        image: document.getElementById('image').value,
+                        image: imageUrl,
                         address: document.getElementById('address').value,
                         price: document.getElementById('price').value,
                         description: document.getElementById('description').value
                     }
                 ])
+
                 .select();
 
-            alert("step4 a");
-
             if (error) {
-                alert('Error inserting property: =' + error.message);
-            } else {
-                alert('Property inserted successfully!');
-            }
+                alert("Error = " +
+                    error.message);
 
-            alert("step6");
-        }
+            } else {
+                alert("property inserted successfuy");
+            }
+        }             
     </script>
 
 
