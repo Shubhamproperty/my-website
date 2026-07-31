@@ -33,6 +33,13 @@ DOCTYPE html>
             "sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC";
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+
+
+        const imageFile =
+            document.getElementById("image").files[0]
+
+        alert(imageFile ? imageFile.name :
+            "NO FILE SELECTED")
         async function saveProperty() {
             alert("step1");
 
