@@ -1,31 +1,63 @@
-var map = L.map('map').setView([25.433165033426327, 81.83578023475101], 13);
+alert("START");
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-}).addTo(map);
+const SUPABASE_URL = "https://sqavlyzqaxutbwqdytic.supabase.co";
+const SUPABASE_KEY = "sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC";
 
-L.marker([25.433165033426327, 81.83578023475101]).addTo(map)
-    .bindPopup('<br>my property location</br><br> mobile 9454687100')
-    .openPopup();
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
-// Main Road Marker
-L.marker([25.433173551679122, 81.83577837574121]).addTo(map)
-    .bindPopup('<br>Main Road</br><br> mobile 9454687100')
-    .openPopup();
+alert("CONNECTED SUCCESSFULLY");
 
-//property Marker
-L.marker([25.431435428682114, 81.83834407306517]).addTo(map)
-    .bindPopup('<br>my property location</br><br> mobile 9454687100')
-    .openPopup();
 
-//line between property and main road
-L.polyline([
-    [25.433173551679122, 81.83577837574121],
-    [25.431435428682114, 81.83834407306517]
-], { color: 'blue', weight: 5 }).addTo(map);
+async function loadproperties() {
 
-//Zoom to show both points
-map.fitBounds([
-    [25.433173551679122, 81.83577837574121],
-    [25.431435428682114, 81.83834407306517]
-]);
+    alert("LOADING PROPERTIES");
+
+    const { data, error } = await supabaseClient
+        .from("properties")
+        .select("*");
+
+
+    alert("AFTER SELECT");
+
+
+    if (error) {
+        alert("ERROR = " + error.message);
+        return;
+    }
+
+
+    alert("TOTAL ROWS = " + data.length);
+
+
+    const container = document.getElementById(
+        "properties-container"
+    );
+
+
+    alert("CONTAINER = " + container);
+
+
+    container.innerHTML = "";
+
+
+    data.forEach((property) => {
+
+        container.innerHTML += `
+            <div>
+                <h2>${property.title}</h2>
+                <p>${property.address}</p>
+                <p>${property.price}</p>
+                <p>${property.description}</p>
+                <hr>
+            </div>
+        `;
+
+    });
+
+}
+
+
+loadproperties();
