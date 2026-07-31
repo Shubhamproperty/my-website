@@ -1,4 +1,4 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,91 +12,74 @@ DOCTYPE html>
     <h1>Add New Property</h1>
 
     <input type="text" id="title" placeholder="Property Title"><br><br>
-    <input type="file" id="image" placeholder="Property Image"><br><br>
+    <input type="file" id="image"><br><br>
     <input type="text" id="address" placeholder="Property Address"><br><br>
     <input type="text" id="price" placeholder="Property Price"><br><br>
 
     <textarea id="description" placeholder="Property Description"></textarea><br><br>
 
-
-    <button onclick="saveProperty()">Save Property</button>
+    <button type="button" onclick="saveProperty()">Save Property</button>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
-
     <script>
-
-        const supabaseUrl =
-            'https://sqavlyzqaxutbwqdytic.supabase.co';
-        const supabaseKey =
-            "sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC";
+        const supabaseUrl = 'https://sqavlyzqaxutbwqdytic.supabase.co';
+        const supabaseKey = 'sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC';
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         async function saveProperty() {
-            alert("step1");
+            try {
+                const title = document.getElementById('title').value;
+                const imageFile = document.getElementById('image').files[0];
 
+                if (!imageFile) {
+                    alert("please select image");
+                    return;
+                }
 
-            const title = document.getElementById('title').value;
+                const fileName = Date.now() + "-" + imageFile.name;
 
-            const imageFile =
-                document.getElementById("image").files[0]
-            if (!imageFile.name); {
+                const { error: uploadError } = await supabaseClient.storage
+                    .from("Property-images")
+                    .upload(fileName, imageFile);
 
-                alert("please select image");
-                return;
-            }
+                if (uploadError) {
+                    alert("Upload Error = " + uploadError.message);
+                    return;
+                }
 
-            alert(imagefile.name);
+                const { data: urlData, error: urlError } = supabaseClient.storage
+                    .from("Property-images")
+                    .getPublicUrl(fileName);
 
-            const fileName = Date.now() + "-" + imageFile.name;
+                if (urlError) {
+                    alert("URL Error = " + urlError.message);
+                    return;
+                }
 
-            const { error: uploadError } = await supabaseClient.storage
-                .from("Property-images")
-                .upload(fileName, imageFile);
+                const imageUrl = urlData.publicUrl;
 
-            if (uploadError) {
-                alert("Upload Error = " + uploadError.message);
-                return;
-            }
-
-            const { data: urlData } = supabaseClient.storage
-                .from("Property-images")
-                .getPublicUrl(fileName);
-
-            const imageUrl = urlData.publicUrl;
-
-            alert("IMAGE UPLOADED");
-
-
-
-
-            alert(imageFile.name);
-
-            const { data, error } = await supabaseClient
-                .from('properties')
-                .insert([
-                    {
-                        title: title,
+                const { data, error } = await supabaseClient
+                    .from('properties')
+                    .insert([{
+                        title,
                         image: imageUrl,
                         address: document.getElementById('address').value,
                         price: document.getElementById('price').value,
                         description: document.getElementById('description').value
-                    }
-                ])
+                    }])
+                    .select();
 
-                .select();
-
-            if (error) {
-                alert("Error = " +
-                    error.message);
-
-            } else {
-                alert("property inserted successfuy");
+                if (error) {
+                    alert("Error = " + error.message);
+                } else {
+                    alert("property inserted successfully");
+                }
+            } catch (err) {
+                alert("ERROR: " + err.message);
             }
-        }             
+        }
     </script>
-
 
 </body>
 
