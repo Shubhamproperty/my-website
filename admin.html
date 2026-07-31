@@ -1,0 +1,73 @@
+DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shubham Property Admin Panel</title>
+</head>
+
+<body>
+
+    <h1>Add New Property</h1>
+
+    <input type="text" id="title" placeholder="Property Title"><br><br>
+    <input type="text" id="image" placeholder="Property Image"><br><br>
+    <input type="text" id="address" placeholder="Property Address"><br><br>
+    <input type="text" id="price" placeholder="Property Price"><br><br>
+
+    <textarea id="description" placeholder="Property Description"></textarea><br><br>
+
+
+    <button onclick="saveProperty()">Save Property</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+    <script>
+
+        const supabaseUrl =
+            'https://sqavlyzqaxutbwqdytic.supabase.co';
+        const supabaseKey =
+            "sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC";
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        async function saveProperty() {
+            alert("step1");
+
+            const title = document.getElementById('title').value;
+
+            alert("step2 = " + title);
+
+            alert("step3 before supabase call");
+
+            const { data, error } = await supabaseClient
+                .from('properties')
+                .insert([
+                    {
+                        title: title,
+                        image: document.getElementById('image').value,
+                        address: document.getElementById('address').value,
+                        price: document.getElementById('price').value,
+                        description: document.getElementById('description').value
+                    }
+                ])
+                .select();
+
+            alert("step4 a");
+
+            if (error) {
+                alert('Error inserting property: =' + error.message);
+            } else {
+                alert('Property inserted successfully!');
+            }
+
+            alert("step6");
+        }
+    </script>
+
+
+</body>
+
+</html>
