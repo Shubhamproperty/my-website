@@ -64,10 +64,13 @@
                     .from('properties')
                     .insert([{
                         title,
-                        image: imageUrl,
+                        image_url: imageUrl,
                         address: document.getElementById('address').value,
                         price: document.getElementById('price').value,
-                        description: document.getElementById('description').value
+                        description: document.getElementById('description').value,
+                        location:
+                            document.getElementById('address')
+                                .value
                     }])
                     .select();
 
