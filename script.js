@@ -48,7 +48,7 @@ async function loadproperties() {
         container.innerHTML += `
             <div>
             <img src="${property.image_Url}" width="300">
-            <p>${property.image_Url}</p>
+                <p>${property.image_Url}</p>
                 <h2>${property.title}</h2>
                 <p>${property.address}</p>
                 <p>${property.price}</p>
