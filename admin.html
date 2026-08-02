@@ -18,8 +18,8 @@
     <input type="text" id="map_url" placeholder="Google Map link"><br><br>
     <textarea id="description" placeholder="Property Description"></textarea><br><br>
 
+    <button type="button" onclick="getLocation()">Get Current Location</button>
     <button type="button" onclick="saveProperty()">Save Property</button>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
@@ -27,6 +27,27 @@
         const supabaseKey = 'sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC';
         const SUPABASE_BUCKET = 'property- images';
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+
+        function getLocation() {
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    document.getElementById("map_url").value =
+                        `https://www.google.com/maps?q=${lat},${lng}`;
+
+                    alert("Location Added Successfully");
+
+                }
+            );
+
+        }
+
+
 
         async function saveProperty() {
             try {
@@ -60,6 +81,7 @@
 
                 const imageUrl = urlData.publicUrl;
                 const mapUrl = document.getElementById('map_url').value;
+                alert(`Image URL: ${imageUrl}\nMap URL: ${mapUrl}`);
                 const { data, error } = await supabaseClient
                     .from('properties')
                     .insert([{
