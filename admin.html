@@ -15,7 +15,7 @@
     <input type="file" id="image"><br><br>
     <input type="text" id="address" placeholder="Property Address"><br><br>
     <input type="text" id="price" placeholder="Property Price"><br><br>
-
+    <input type="text" id="map_url" placeholder="Google Map link"><br><br>
     <textarea id="description" placeholder="Property Description"></textarea><br><br>
 
     <button type="button" onclick="saveProperty()">Save Property</button>
@@ -59,7 +59,7 @@
                 }
 
                 const imageUrl = urlData.publicUrl;
-
+                const mapUrl = document.getElementById('map_url').value;
                 const { data, error } = await supabaseClient
                     .from('properties')
                     .insert([{
@@ -70,7 +70,9 @@
                         description: document.getElementById('description').value,
                         location:
                             document.getElementById('address')
-                                .value
+                                .value,
+                        map_url: mapUrl
+
                     }])
                     .select();
 

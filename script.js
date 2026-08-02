@@ -53,6 +53,11 @@ async function loadproperties() {
                 <p>${property.address}</p>
                 <p>${property.price}</p>
                 <p>${property.description}</p>
+
+                <a href="${property.map_url}" target="_blank">View Location</a>
+                <br><br>S
+
+
                 <hr>
             </div>
         `;
