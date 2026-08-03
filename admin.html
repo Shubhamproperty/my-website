@@ -11,8 +11,8 @@
 
     <h1>Add New Property</h1>
 
-    <input type="text" id="title" placeholder="Property Title"><br><br>
-    <input type="file" id="image"><br><br>
+    <input type="text" id="title" placeholder="Property ki jan kari"><br><br>
+    <input type="file" id="image" multiple><BR><BR>
     <input type="text" id="address" placeholder="Property Address"><br><br>
     <input type="text" id="price" placeholder="Property Price"><br><br>
     <input type="text" id="map_url" placeholder="Google Map link"><br><br>
@@ -25,23 +25,26 @@
     <script>
         const supabaseUrl = 'https://sqavlyzqaxutbwqdytic.supabase.co';
         const supabaseKey = 'sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC';
-        const SUPABASE_BUCKET = 'property- images';
+        const SUPABASE_BUCKET = 'property- images'; // Change this to the exact bucket name from Supabase storage if needed
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
 
         function getLocation() {
 
             navigator.geolocation.getCurrentPosition(
                 function (position) {
-
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
+                    const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
 
-                    document.getElementById("map_url").value =
-                        `https://www.google.com/maps?q=${lat},${lng}`;
+                    const mapInput = document.getElementById('map_url');
+                    if (mapInput) {
+                        mapInput.value = mapUrl;
+                    }
 
-                    alert("Location Added Successfully");
-
+                    alert('Location Added Successfully');
+                },
+                function () {
+                    alert('Unable to get your location.');
                 }
             );
 
@@ -51,59 +54,73 @@
 
         async function saveProperty() {
             try {
-                const title = document.getElementById('title').value;
-                const imageFile = document.getElementById('image').files[0];
+                const title = document.getElementById('title').value.trim();
+                const address = document.getElementById('address').value.trim();
+                const price = document.getElementById('price').value.trim();
+                const description = document.getElementById('description').value.trim();
+                const imageFiles = document.getElementById('image').files;
+                const mapUrl = document.getElementById('map_url') ? document.getElementById('map_url').value.trim() : '';
 
-                if (!imageFile) {
+                if (!title || !address || !price || !description) {
+                    alert('Please fill in all fields.');
+                    return;
+                }
+
+                if (imageFiles.length === 0) {
                     alert('Please select an image');
                     return;
                 }
 
-                const fileName = `${Date.now()}-${imageFile.name}`;
+                const imageUrls = [];
+                for (const imageFile of imageFiles) {
+                    const fileName = `${Date.now()}-${imageFile.name}`;
 
-                const { error: uploadError } = await supabaseClient.storage
-                    .from(SUPABASE_BUCKET)
-                    .upload(fileName, imageFile);
+                    const { error: uploadError } = await supabaseClient.storage
+                        .from(SUPABASE_BUCKET)
+                        .upload(fileName, imageFile);
 
-                if (uploadError) {
-                    alert(`Upload Error = ${uploadError.message}`);
-                    return;
+                    if (uploadError) {
+                        console.error('Upload Error', uploadError);
+                        alert(`Upload Error: ${uploadError.message}`);
+                        return;
+                    }
+
+                    const { data: urlData, error: urlError } = await supabaseClient.storage
+                        .from(SUPABASE_BUCKET)
+                        .getPublicUrl(fileName);
+                    imageUrls.push(urlData.publicUrl);
                 }
-
-                const { data: urlData, error: urlError } = await supabaseClient.storage
-                    .from(SUPABASE_BUCKET)
-                    .getPublicUrl(fileName);
-
                 if (urlError) {
-                    alert(`URL Error = ${urlError.message}`);
+                    console.error('URL Error', urlError);
+                    alert(`URL Error: ${urlError.message}`);
                     return;
                 }
 
                 const imageUrl = urlData.publicUrl;
-                const mapUrl = document.getElementById('map_url').value;
-                alert(`Image URL: ${imageUrl}\nMap URL: ${mapUrl}`);
+
                 const { data, error } = await supabaseClient
                     .from('properties')
                     .insert([{
                         title,
-                        image_Url: imageUrl,
-                        address: document.getElementById('address').value,
-                        price: document.getElementById('price').value,
-                        description: document.getElementById('description').value,
-                        location:
-                            document.getElementById('address')
-                                .value,
+                        image: imageUrls[0],
+                        image_urls:
+                            JSON.stringify(imageUrls),
+                        address,
+                        price,
+                        description,
                         map_url: mapUrl
-
                     }])
                     .select();
 
                 if (error) {
-                    alert(`Error = ${error.message}`);
-                } else {
-                    alert('Property inserted successfully');
+                    console.error('Insert Error', error);
+                    alert(`Insert Error: ${error.message}`);
+                    return;
                 }
+
+                alert('Property inserted successfully');
             } catch (err) {
+                console.error('Unexpected Error', err);
                 alert(`ERROR: ${err.message}`);
             }
         }
