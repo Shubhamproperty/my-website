@@ -20,6 +20,7 @@
 
     <button type="button" onclick="getLocation()">Get Current Location</button>
     <button type="button" onclick="saveProperty()">Save Property</button>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
@@ -58,14 +59,15 @@
                 const address = document.getElementById('address').value.trim();
                 const price = document.getElementById('price').value.trim();
                 const description = document.getElementById('description').value.trim();
-                const imageFiles = document.getElementById('image').files;
+
                 const mapUrl = document.getElementById('map_url') ? document.getElementById('map_url').value.trim() : '';
 
                 if (!title || !address || !price || !description) {
                     alert('Please fill in all fields.');
                     return;
                 }
-
+                const imageFiles = document.getElementById('image').files;
+                document.getElementById("image").files;
                 if (imageFiles.length === 0) {
                     alert('Please select an image');
                     return;
@@ -87,14 +89,14 @@
                     imageUrls.push(urlData.publicUrl);
 
                 }
+                alert("TOTAL IMAGE =" + imageUrls.length);
+                alert(JSON.stringify(imageUrls));
 
-                alert(JSON.stringify(imageUrls))
-
-                const { data, error } = await supabaseClient
+                const { error } = await supabaseClient
                     .from('properties')
                     .insert([{
                         title,
-                        image: imageUrls[0],
+                        image: imageUrls[o],
                         image_urls:
                             JSON.stringify(imageUrls),
                         address,
@@ -104,7 +106,13 @@
                     }])
                     .select();
 
+                if (error) {
+                    alert(error.message);
+                    return;
+                }
 
+                console.log("imageUrls =", imageUrls);
+                console.log("data =", data);
 
                 alert('Property inserted successfully');
             } catch (err) {
