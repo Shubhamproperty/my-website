@@ -74,6 +74,7 @@
                 }
 
                 const imageUrls = [];
+                alert(" imageUrls created");
                 for (const imageFile of imageFiles) {
                     const fileName = `${Date.now()}-${imageFile.name}`;
 
@@ -93,23 +94,26 @@
                     imageUrls.push(urlData.publicUrl);
                     alert(JSON.stringify(imageUrls));
 
-                    alert(JSON.stringify(imageUrls));
-                    console.log(imageUrls);
-                    alert("Images Added = " + imageUrls.length);
-                }
-                alert("TOTAL IMAGE =" + imageUrls.length);
 
-                const { error } = await supabaseClient
-                    .from('properties')
-                    .insert([{
-                        title,
-                        image_urls,
-                        address,
-                        price,
-                        description,
-                        map_url: mapUrl
-                    }])
-                    .select();
+                    console.log(imageUrls);
+
+                }
+                alert("Type = " + typeof imageUrls);
+                alert("Count = " + imageUrls.length);
+
+                const { error } =
+                    await supabaseClient
+                        .from('properties')
+                        .insert([{
+                            title,
+                            image_urls:
+                                JSON.stringify(imageUrls),
+                            address,
+                            price,
+                            description,
+                            map_url: mapUrl
+                        }])
+                        .select();
 
                 if (error) {
                     alert(error.message);
@@ -122,7 +126,7 @@
                 alert('Property inserted successfully');
             } catch (err) {
                 console.error('Unexpected Error', err);
-                alert(`ERROR: ${err.message}`);
+                alert(err.stack);
             }
         }
     </script>
