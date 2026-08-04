@@ -84,10 +84,11 @@
                         alert(`Upload Error: ${uploadError.message}`);
                         return;
                     }
-
+                    imageUrls.push(urlData.publicUrl);
 
                 }
 
+                alert(JSON.stringify(imageUrls))
 
                 const { data, error } = await supabaseClient
                     .from('properties')
