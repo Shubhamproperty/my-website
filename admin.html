@@ -90,13 +90,7 @@
                         .getPublicUrl(fileName);
                     imageUrls.push(urlData.publicUrl);
                 }
-                if (urlError) {
-                    console.error('URL Error', urlError);
-                    alert(`URL Error: ${urlError.message}`);
-                    return;
-                }
 
-                const imageUrl = urlData.publicUrl;
 
                 const { data, error } = await supabaseClient
                     .from('properties')
@@ -112,11 +106,7 @@
                     }])
                     .select();
 
-                if (error) {
-                    console.error('Insert Error', error);
-                    alert(`Insert Error: ${error.message}`);
-                    return;
-                }
+
 
                 alert('Property inserted successfully');
             } catch (err) {
