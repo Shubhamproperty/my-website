@@ -44,18 +44,19 @@ async function loadproperties() {
 
 
     data.forEach((property) => {
-
+        const images =
+            JSON.parse(property.image_urls);
         container.innerHTML += `
             <div>
-            <img src="${property.image_Url}" width="300">
-                <p>${property.image_Url}</p>
+            <img src="${images[0]}" width="300">
+                <p>$address</p>
                 <h2>${property.title}</h2>
                 <p>${property.address}</p>
                 <p>${property.price}</p>
                 <p>${property.description}</p>
 
                 <a href="${property.map_url}" target="_blank">View Location</a>
-                <br><br>S
+                <br><br>
 
 
                 <hr>
