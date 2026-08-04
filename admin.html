@@ -91,20 +91,21 @@
                         .getPublicUrl(fileName);
 
                     imageUrls.push(urlData.publicUrl);
+                    alert(JSON.stringify(imageUrls));
 
+                    alert(JSON.stringify(imageUrls));
                     console.log(imageUrls);
                     alert("Images Added = " + imageUrls.length);
                 }
                 alert("TOTAL IMAGE =" + imageUrls.length);
-                alert(JSON.stringify(imageUrls));
 
                 const { error } = await supabaseClient
                     .from('properties')
                     .insert([{
                         title,
-                        image: imageUrls[0],
+
                         image_urls:
-                            JSON.stringify(imageUrls),
+                            JSON.stringify(image_Urls),
                         address,
                         price,
                         description,
