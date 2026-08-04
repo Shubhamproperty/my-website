@@ -85,10 +85,7 @@
                         return;
                     }
 
-                    const { data: urlData, error: urlError } = await supabaseClient.storage
-                        .from(SUPABASE_BUCKET)
-                        .getPublicUrl(fileName);
-                    imageUrls.push(urlData.publicUrl);
+
                 }
 
 
