@@ -86,8 +86,14 @@
                         alert(`Upload Error: ${uploadError.message}`);
                         return;
                     }
+                    const { data: urlData } = supabaseClient.storage
+                        .from(SUPABASE_BUCKET)
+                        .getPublicUrl(fileName);
+
                     imageUrls.push(urlData.publicUrl);
 
+                    console.log(imageUrls);
+                    alert("Images Added = " + imageUrls.length);
                 }
                 alert("TOTAL IMAGE =" + imageUrls.length);
                 alert(JSON.stringify(imageUrls));
@@ -96,7 +102,7 @@
                     .from('properties')
                     .insert([{
                         title,
-                        image: imageUrls[o],
+                        image: imageUrls[0],
                         image_urls:
                             JSON.stringify(imageUrls),
                         address,
@@ -112,7 +118,7 @@
                 }
 
                 console.log("imageUrls =", imageUrls);
-                console.log("data =", data);
+
 
                 alert('Property inserted successfully');
             } catch (err) {
