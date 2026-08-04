@@ -10,7 +10,6 @@ const supabaseClient = window.supabase.createClient(
 
 alert("CONNECTED SUCCESSFULLY");
 
-
 async function loadproperties() {
 
     alert("LOADING PROPERTIES");
@@ -19,58 +18,53 @@ async function loadproperties() {
         .from("properties")
         .select("*");
 
-
     alert("AFTER SELECT");
-
 
     if (error) {
         alert("ERROR = " + error.message);
         return;
     }
 
-
     alert("TOTAL ROWS = " + data.length);
 
-
-    const container = document.getElementById(
-        "properties-container"
-    );
-
+    const container = document.getElementById("properties-container");
 
     alert("CONTAINER = " + container);
 
-
     container.innerHTML = "";
 
+    alert("FOR EACH START");
 
+    data.forEach((property) => {
+        alert("PHOTO URL = " = +property.image_urls);
 
-    data.forEach(property) => {
-        alert("image_urls = " +
-            property.image_urls
-        );
-
-
+        alert("TITLE = " + property.title);
 
         container.innerHTML += `
-            <div>
-            <img src="${images[0]}" width="300">
-                <p>$address</p>
-                <h2>${property.title}</h2>
-                <p>${property.address}</p>
-                <p>${property.price}</p>
-                <p>${property.description}</p>
+        <div>
 
-                <a href="${property.map_url}" target="_blank">View Location</a>
-                <br><br>
+            <img src="${property.image_urls}" width="300">
 
+            <h2>${property.title}</h2>
 
-                <hr>
-            </div>
+            <p>${property.address}</p>
+
+            <p>${property.price}</p>
+
+            <p>${property.description}</p>
+
+            <a href="${property.map_url}" target="_blank">
+                View Location
+            </a>
+
+            <br><br>
+            <hr>
+
+        </div>
         `;
 
     });
 
 }
-
 
 loadproperties();
