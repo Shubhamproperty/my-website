@@ -12,125 +12,190 @@
     <h1>Add New Property</h1>
 
     <input type="text" id="title" placeholder="Property ki jan kari"><br><br>
-    <input type="file" id="image" multiple><BR><BR>
+
+    <input type="file" id="image" multiple><br><br>
+
     <input type="text" id="address" placeholder="Property Address"><br><br>
+
     <input type="text" id="price" placeholder="Property Price"><br><br>
-    <input type="text" id="map_url" placeholder="Google Map link"><br><br>
+
+    <input type="text" id="map_url" placeholder="Google Map Link"><br><br>
+
     <textarea id="description" placeholder="Property Description"></textarea><br><br>
 
-    <button type="button" onclick="getLocation()">Get Current Location</button>
-    <button type="button" onclick="saveProperty()">Save Property</button>
+    <button type="button" onclick="getLocation()">
+        Get Current Location
+    </button>
+
+    <button type="button" onclick="saveProperty()">
+        Save Property
+    </button>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        const supabaseUrl = 'https://sqavlyzqaxutbwqdytic.supabase.co';
-        const supabaseKey = 'sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC';
-        const SUPABASE_BUCKET = 'property-images'; // Change this to the exact bucket name from Supabase storage if needed
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        alert("SCRIPT LOADED");
+        const supabaseUrl =
+            "https://sqavlyzqaxutbwqdytic.supabase.co";
+
+        const supabaseKey =
+            "sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC";
+
+        const SUPABASE_BUCKET =
+            "property- images";
+
+        const supabaseClient =
+            supabase.createClient(
+                supabaseUrl,
+                supabaseKey
+            );
 
         function getLocation() {
 
             navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
 
-                    const mapInput = document.getElementById('map_url');
+                function (position) {
+
+                    const lat =
+                        position.coords.latitude;
+
+                    const lng =
+                        position.coords.longitude;
+
+                    const mapUrl =
+                        `https://www.google.com/maps?q=${lat},${lng}`;
+
+                    const mapInput =
+
+                        document.getElementById("map_url")
+
                     if (mapInput) {
-                        mapInput.value = mapUrl;
+
+                        mapInput.value =
+                            mapUrl;
                     }
 
-                    alert('Location Added Successfully');
+                    alert("Location Added Successfully");
+
                 },
-                function () {
-                    alert('Unable to get your location.');
+
+                function (error) {
+
+                    alert("Unable to get location");
+
                 }
+
             );
 
         }
 
-
-
         async function saveProperty() {
+
             try {
-                const title = document.getElementById('title').value.trim();
-                const address = document.getElementById('address').value.trim();
-                const price = document.getElementById('price').value.trim();
-                const description = document.getElementById('description').value.trim();
 
-                const mapUrl = document.getElementById('map_url') ? document.getElementById('map_url').value.trim() : '';
+                const title =
+                    document.getElementById("title").value.trim();
 
-                if (!title || !address || !price || !description) {
-                    alert('Please fill in all fields.');
+                const address =
+                    document.getElementById("address").value.trim();
+
+                const price =
+                    document.getElementById("price").value.trim();
+
+                const description =
+                    document.getElementById("description").value.trim();
+
+                const mapUrl =
+                    document.getElementById("map_url").value.trim();
+
+                if (
+                    !title ||
+                    !address ||
+                    !price ||
+                    !description
+                ) {
+                    alert("Please fill all fields");
                     return;
                 }
-                const imageFiles = document.getElementById('image').files;
-                document.getElementById("image").files;
+
+                const imageFiles =
+                    document.getElementById("image").files;
+
                 if (imageFiles.length === 0) {
-                    alert('Please select an image');
+                    alert("Please select photos");
                     return;
                 }
 
                 const imageUrls = [];
-                alert(" imageUrls created");
-                for (const imageFile of imageFiles) {
-                    const fileName = `${Date.now()}-${imageFile.name}`;
 
-                    const { error: uploadError } = await supabaseClient.storage
-                        .from(SUPABASE_BUCKET)
-                        .upload(fileName, imageFile);
+                for (const imageFile of imageFiles) {
+
+                    const safeName =
+                        imageFile.name.replace(/\s+/g, "-");
+
+                    const fileName =
+                        `${Date.now()}-${safeName}`;
+
+                    const { error: uploadError } =
+                        await supabaseClient.storage
+                            .from(SUPABASE_BUCKET)
+                            .upload(fileName, imageFile);
 
                     if (uploadError) {
-                        console.error('Upload Error', uploadError);
-                        alert(`Upload Error: ${uploadError.message}`);
+
+                        alert(
+                            "Upload Error: " +
+                            uploadError.message
+                        );
+
                         return;
                     }
-                    const { data: urlData } = supabaseClient.storage
-                        .from(SUPABASE_BUCKET)
-                        .getPublicUrl(fileName);
 
-                    imageUrls.push(urlData.publicUrl);
-                    alert(JSON.stringify(imageUrls));
+                    const { data: urlData } =
+                        supabaseClient.storage
+                            .from(SUPABASE_BUCKET)
+                            .getPublicUrl(fileName);
 
-
-                    console.log(imageUrls);
-
+                    imageUrls.push(
+                        urlData.publicUrl
+                    );
                 }
-                alert("Type = " + typeof imageUrls);
-                alert("Count = " + imageUrls.length);
 
                 const { error } =
                     await supabaseClient
-                        .from('properties')
-                        .insert([{
-                            title,
-                            image_urls:
-                                JSON.stringify(imageUrls),
-                            address,
-                            price,
-                            description,
-                            map_url: mapUrl
-                        }])
-                        .select();
+                        .from("properties")
+                        .insert([
+                            {
+                                title,
+                                image_urls:
+                                    JSON.stringify(imageUrls),
+                                address,
+                                price,
+                                description,
+                                map_url: mapUrl
+                            }
+                        ]);
 
                 if (error) {
                     alert(error.message);
                     return;
                 }
 
-                console.log("imageUrls =", imageUrls);
+                alert("Property Saved Successfully");
 
-
-                alert('Property inserted successfully');
-            } catch (err) {
-                console.error('Unexpected Error', err);
-                alert(err.stack);
             }
+
+            catch (err) {
+
+                console.error(err);
+
+                alert(
+                    "Error: " +
+                    err.message
+                );
+
+            }
+
         }
+
     </script>
-
-</body>
-
-</html>
