@@ -28,12 +28,12 @@ async function loadproperties() {
     container.innerHTML = "";
     data.forEach((property) => {
 
-        let imageUrl = "";
+        let imagesHtml = "";
 
         if
             (property.image_urls.startsWith("[")) {
 
-            const image = JSON.parse(property.image_urls);
+            const images = JSON.parse(property.image_urls);
 
             images.forEach(url => {
                 imagesHtml += `
