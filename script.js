@@ -52,7 +52,7 @@ async function loadproperties() {
 
 
         container.innerHTML += `
-        <div>
+        <div class="property-card">
 
          ${imagesHtml}
           
