@@ -33,22 +33,29 @@ async function loadproperties() {
         if
             (property.image_urls.startsWith("[")) {
 
-            imageUrl = JSON.parse(property.image_urls)[0];
+            const image = JSON.parse(property.image_urls);
+
+            images.forEach(url => {
+                imagesHtml += `
+                    <img src="${url}"
+                    width="300">
+                    `;
+            });
 
         } else {
-            imageUrl = property.image_urls;
+            imagesHtml = `
+            <img src="$
+            {property.image_urls}"
+            width="300">
+            `;
         }
 
 
         container.innerHTML += `
         <div>
 
-          <img src="${imageUrl}"
-          width="300">
+         ${imagesHtml}
           
-
-
-           
 
             <h2>${property.title}</h2>
 

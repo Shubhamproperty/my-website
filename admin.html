@@ -121,6 +121,8 @@
                 const imageFiles =
                     document.getElementById("image").files;
 
+                alert(imageFiles.length);
+
                 if (imageFiles.length === 0) {
                     alert("Please select photos");
                     return;
@@ -128,7 +130,14 @@
 
                 const imageUrls = [];
 
+                console.log("FILES COUNT =",
+                    imageFiles.length);
+
                 for (const imageFile of imageFiles) {
+
+
+                    console.log("UPLOADING =",
+                        imageFile.name);
 
                     const safeName =
                         imageFile.name.replace(/\s+/g, "-");
@@ -160,6 +169,11 @@
                         urlData.publicUrl
                     );
                 }
+
+                alert("TOTAL URLS = " +
+                    imageUrls.length);
+
+                alert(JSON.stringify(imageUrls));
 
                 const { error } =
                     await supabaseClient
