@@ -28,6 +28,8 @@ async function loadproperties() {
     container.innerHTML = "";
     data.forEach((property) => {
 
+        let photoCount = 1;
+
         let imagesHtml = "";
 
         if
@@ -35,28 +37,37 @@ async function loadproperties() {
 
             const images = JSON.parse(property.image_urls);
 
+            photoCount = images.length;
+
             images.forEach(url => {
                 imagesHtml += `
+
+<a href="${url}" target="_blank">
+
                     <img src="${url}"
                     width="300">
+
+                    </a>
                     `;
+
             });
 
         } else {
             imagesHtml = `
-            <img src="$
-            {property.image_urls}"
+            <a href="${property.image_urls}" target="_blank">
+            <img src="${property.image_urls}"
             width="300">
+            </a>
             `;
         }
 
 
         container.innerHTML += `
         <div class="property-card">
-
+<div class="photo-gallery">
          ${imagesHtml}
-          
-<p class=" photo-count"> ${photoCount} Photos Available</p>
+          </div>
+
 
             <h2>${property.title}</h2>
 
@@ -71,6 +82,10 @@ async function loadproperties() {
             </a>
 
             <br><br>
+
+            <a href="tel:${property.contact_number}">
+                Call: ${property.contact_number}
+            </a>
             <hr>
 
         </div>

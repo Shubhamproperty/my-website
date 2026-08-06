@@ -19,6 +19,8 @@
 
     <input type="text" id="price" placeholder="Property Price"><br><br>
 
+    <input type="text" id="contact_number" placeholder="Contact Number"><br><br>
+
     <input type="text" id="map_url" placeholder="Google Map Link"><br><br>
 
     <textarea id="description" placeholder="Property Description"></textarea><br><br>
@@ -92,6 +94,10 @@
         async function saveProperty() {
 
             try {
+
+
+                const contactNumber =
+                    document.getElementById("contact_number").value.trim();
 
                 const title =
                     document.getElementById("title").value.trim();
@@ -180,6 +186,7 @@
                         .from("properties")
                         .insert([
                             {
+                                contact_number: contactNumber,
                                 title,
                                 image_urls:
                                     JSON.stringify(imageUrls),
