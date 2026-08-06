@@ -56,6 +56,7 @@ async function loadproperties() {
 
          ${imagesHtml}
           
+<p class=" photo-count"> ${photoCount} Photos Available</p>
 
             <h2>${property.title}</h2>
 

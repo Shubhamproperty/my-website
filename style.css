@@ -1,38 +1,47 @@
-#properties-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.property-card {
+property-card {
     background: white;
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    padding: 12px;
+    margin: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
 }
 
 .property-card img {
     width: 100%;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
 }
 
 .property-card h2 {
-    margin: 10px 0;
-    color: #222;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 8px;
 }
 
 .property-card p {
     margin: 5px 0;
+    color: #555;
 }
 
 .property-card a {
     display: inline-block;
     margin-top: 10px;
+    padding: 10px 15px;
     background: #28a745;
     color: white;
     text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.photo-count {
+    background: #007bff;
+    color: white;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px 0;
 }
