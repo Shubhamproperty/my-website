@@ -1,0 +1,86 @@
+/* ===== ADMIN PAGE ===== */
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Main Box */
+.admin-box {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    color: #28a745;
+    margin-bottom: 5px;
+}
+
+.admin-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
+input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border: 2px solid #443480;
+    border-radius: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #28a745;
+    outline: none;
+}
+
+/* File Upload */
+input[type="file"] {
+    background: #f8f9fa;
+    padding: 10px;
+}
+
+/* Save Button */
+button {
+    width: 100%;
+    padding: 14px;
+    background: #3e177d;
+    color: white;
+    border: lightseagreen;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #489158;
+}
+
+/* Mobile */
+@media(max-width:600px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .admin-box {
+        padding: 15px;
+    }
+
+}

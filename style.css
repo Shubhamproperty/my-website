@@ -16,7 +16,7 @@ body {
     margin: 12px;
     padding: 12px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(163, 36, 36, 0.1);
 }
 
 .photo-gallery {
@@ -50,10 +50,10 @@ body {
     margin-top: 8px;
     margin-right: 8px;
     padding: 10px 15px;
-    background: #28a745;
+    background: #377946;
     color: white;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 4px;
     font-weight: bold;
 }
 
@@ -94,4 +94,22 @@ body {
         box-sizing: border-box;
         margin-top: 6px;
     }
+}
+
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    color: #41197a;
+}
+
+#searchBox {
+    display: block;
+    width: 90%;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }
