@@ -1,115 +1,180 @@
-body {
+/* ===== GENERAL ===== */
+
+* {
     margin: 0;
     padding: 0;
-    background: #f5f5f5;
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
-#properties-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: auto;
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fa;
+    color: #333;
+    overflow-x: hidden;
 }
+
+/* ===== HEADER ===== */
+
+header {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+header p {
+    opacity: 0.9;
+}
+
+/* ===== SEARCH BOX ===== */
+
+#searchBox {
+    width: 90%;
+    max-width: 600px;
+    display: block;
+    margin: 15px auto;
+    padding: 12px;
+    border: 2px solid #28a745;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+/* ===== PROPERTY CARD ===== */
 
 .property-card {
+    width: 95%;
+    max-width: 700px;
+    margin: 20px auto;
     background: white;
-    margin: 12px;
-    padding: 12px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(163, 36, 36, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    transition: 0.3s;
 }
+
+.property-card:hover {
+    transform: translateY(-3px);
+}
+
+/* ===== PHOTO GALLERY ===== */
 
 .photo-gallery {
     display: flex;
     gap: 8px;
     overflow-x: auto;
-    padding-bottom: 5px;
+    padding: 10px;
+    background: #f8f9fa;
 }
 
 .photo-gallery img {
-    width: 220px;
-    height: 160px;
+    width: 150px;
+    height: 120px;
     object-fit: cover;
     border-radius: 10px;
-    border: 1px solid #ddd;
     flex-shrink: 0;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
+.photo-gallery img:hover {
+    transform: scale(1.05);
+}
+
+/* ===== PROPERTY DETAILS ===== */
+
 .property-card h2 {
-    margin: 10px 0 5px;
-    font-size: 20px;
+    padding: 10px 15px;
+    color: #28a745;
+    font-size: 22px;
 }
 
 .property-card p {
-    margin: 5px 0;
+    padding: 3px 15px;
     color: #555;
+    line-height: 1.5;
 }
 
-.property-card a {
+/* ===== BUTTONS ===== */
+
+.button-group {
+    padding: 15px;
+}
+
+.button-group a {
     display: inline-block;
-    margin-top: 8px;
-    margin-right: 8px;
-    padding: 10px 15px;
-    background: #377946;
-    color: white;
     text-decoration: none;
-    border-radius: 4px;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 8px;
+    color: white;
     font-weight: bold;
 }
 
-.property-card a:hover {
-    background: #e00e07;
+.call-btn {
+    background: #28a745;
 }
+
+.location-btn {
+    background: #007bff;
+}
+
+.call-btn:hover {
+    background: #218838;
+}
+
+.location-btn:hover {
+    background: #0056b3;
+}
+
+/* ===== PHOTO COUNT ===== */
 
 .photo-count {
     display: inline-block;
-    background: #007bff;
+    background: #28a745;
     color: white;
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 20px;
-    font-size: 13px;
-    margin: 8px 0;
+    font-size: 14px;
+    margin: 10px 15px;
 }
 
-/* Mobile */
-@media(max-width:768px) {
+/* ===== FOOTER ===== */
 
-    .property-card {
-        margin: 8px;
-        padding: 10px;
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    background: #222;
+    color: white;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:600px) {
+
+    header h1 {
+        font-size: 22px;
     }
 
     .photo-gallery img {
-        width: 170px;
-        height: 130px;
+        width: 120px;
+        height: 90px;
     }
 
     .property-card h2 {
         font-size: 18px;
     }
 
-    .property-card a {
-        width: 100%;
+    .button-group a {
+        display: block;
         text-align: center;
-        box-sizing: border-box;
-        margin-top: 6px;
     }
 }
 
-
-h1 {
-    text-align: center;
-    margin: 20px 0;
-    color: #41197a;
-}
-
-#searchBox {
-    display: block;
-    width: 90%;
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
+To make it look even better:
