@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shubham Property Admin Panel</title>
 
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="admin.css?v=20260809">
 
 
 </head>
@@ -15,7 +15,7 @@
 
     <h1>Add your Property with us </h1>
 
-    <input type="text" id="Property Details" placeholder="ROOM  Details"><br><br>
+    <input type="text" id="Property Details" placeholder="Property Details"><br><br>
 
     <input type="file" id="image" multiple><br><br>
 
@@ -26,13 +26,13 @@
 
     <input type="text" id="contact_number" placeholder="Contact Number"><br><br>
 
-    <input type="text" id="map_url" placeholder="Google Map Link"><br><br>
+    <input type="text" id="map_url" placeholder=" Paste your Google Map Link Here"><br><br>
 
 
     <textarea id="description" placeholder="Property Description"></textarea><br><br>
 
-    <button type="button" onclick="getLocation()">
-        Get Current Location
+    <button type="button" onclick="openGoogleMaps()">
+        Open Google Maps
     </button>
 
     <button type="button" onclick="saveProperty()">
@@ -58,44 +58,16 @@
                 supabaseKey
             );
 
-        function getLocation() {
+        function openGoogleMaps() {
 
-            navigator.geolocation.getCurrentPosition(
-
-                function (position) {
-
-                    const lat =
-                        position.coords.latitude;
-
-                    const lng =
-                        position.coords.longitude;
-
-                    const mapUrl =
-                        `https://www.google.com/maps?q=${lat},${lng}`;
-
-                    const mapInput =
-
-                        document.getElementById("map_url")
-
-                    if (mapInput) {
-
-                        mapInput.value =
-                            mapUrl;
-                    }
-
-                    alert("Location Added Successfully");
-
-                },
-
-                function (error) {
-
-                    alert("Unable to get location");
-
-                }
-
-            );
-
+            window.open("https://www.google.com/maps", "_blank");
         }
+
+
+
+
+
+
 
         async function saveProperty() {
 
