@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Submit Property</title>
+
+</head>
+
+<body>
+
+    <h2>
+        Submit Property
+    </h2>
+
+    <input type="text" id="agent_name" placeholder="Agent Name"><br><br>
+    <input type="text" id="agent_mobile" placeholder="Mobile Number"><br><br>
+    <input type="text" id="title" placeholder="Property Title"><br><br>
+    <input type="text" id="price" placeholder="Price"><br><br>
+    <input type="text" id="address" placeholder="Address"><br><br>
+    <input type="text" id="description" placeholder="Description"><br><br>
+    <input type="text" id="location" placeholder="location"><br><br>
+    <input type="text" id="map_url" placeholder=" Paste your Google Map Link Here"><br><br>
+
+
+    <button type="button" onclick="opengooglemap()">pata dale</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        const sb =
+            window.supabase.createClient(
+                "https://sqavlyzqaxutbwqdytic.supabase.co",
+                "sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC"
+            );
+
+        async function submitProperty() {
+            const agent_name = document.getElementById("agent_name").value;
+            const agent_mobile = document.getElementById("agent_mobile").value;
+            const title = document.getElementById("title").value;
+            const price = document.getElementById("price").value;
+            const address = document.getElementById("address").value;
+            const description = document.getElementById("description").value;
+            const location = document.getElementById("location").value;
+
+            const { data, error } = await sb
+                .from("properties")
+                .insert([
+                    {
+                        agent_name,
+                        agent_mobile,
+                        title,
+                        price,
+                        address,
+                        description,
+                        location,
+                        status: "pending" // Set the status to "pending" for admin approval
+                    }
+                ]);
+
+            if (error) {
+                alert("Error submitting property: " + error.message);
+            } else {
+                alert("Property submitted successfully!");
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

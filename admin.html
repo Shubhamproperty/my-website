@@ -39,6 +39,11 @@
         Save Property
     </button>
 
+
+    <hr>
+    <h2>pending-property</h2>
+    <div id="pending-properties"> Loading...</div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
@@ -193,8 +198,61 @@
                     err.message
                 );
 
-            }
 
+            }
         }
 
+        async function loadPendingProperties() {
+
+            const { data, error } = await supabaseClient
+                .from("properties")
+                .select("*")
+                .eq("status", "pending");
+
+            const container =
+                document.getElementById("pending-properties");
+
+            if (error) {
+                container.innerHTML = error.message;
+                return;
+            }
+
+            container.innerHTML = "";
+
+            data.forEach(property => {
+
+                container.innerHTML += `
+        <div>
+            <h3>${property.title}</h3>
+
+            <button onclick="approveProperty(${property.id})">
+                Approve
+            </button>
+        </div>
+        `;
+            });
+        }
+
+
+        async function approveProperty(propertyId) {
+
+            alert("Approve clicked : " + propertyId);
+
+            const { error } = await supabaseClient
+                .from("properties")
+                .update({ status: "approved" })
+                .eq("id", propertyId);
+
+            if (error) {
+                alert(error.message);
+                return;
+            }
+
+            alert("Approved");
+
+            loadPendingProperties();
+        }
+
+
     </script>
+</body>

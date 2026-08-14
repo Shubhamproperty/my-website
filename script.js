@@ -14,8 +14,8 @@ async function loadproperties() {
 
     const { data, error } = await supabaseClient
         .from("properties")
-        .select("*");
-
+        .select("*")
+        .eq("status", "approved");
     if (error) {
         alert("ERROR = " + error.message);
         return;
@@ -71,11 +71,11 @@ async function loadproperties() {
 
             <h2>${property.title}</h2>
 
-            <p>${property.address}</p>
+            
 
             <p>${property.price}</p>
 
-            <p>${property.description}</p>
+            
 
             <a href="${property.map_url}" target="_blank">
                 View Location
