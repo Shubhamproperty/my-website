@@ -288,3 +288,38 @@ footer {
         margin-top: 10px;
     }
 }
+
+/* Submit Property Button */
+
+.submit-btn {
+    display: inline-block;
+    background: #0d6efd;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background: #084298;
+    transform: scale(1.05);
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
+
+.header {
+    text-align: center;
+    padding: 20px;
+
+}
+
+.submit-btn {
+    margin-top: 10px;
+}

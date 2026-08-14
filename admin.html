@@ -202,6 +202,10 @@
             }
         }
 
+
+
+
+
         async function loadPendingProperties() {
 
             const { data, error } = await supabaseClient
@@ -213,7 +217,8 @@
                 document.getElementById("pending-properties");
 
             if (error) {
-                container.innerHTML = error.message;
+                container.innerHTML =
+                    "Error: " + error.message;
                 return;
             }
 
@@ -222,8 +227,18 @@
             data.forEach(property => {
 
                 container.innerHTML += `
-        <div>
+        <div style="border:1px solid #ccc;padding:10px;margin:10px 0;">
+
+        <img
+        src="${property.image_urls}"width="200">
+            
+
+
             <h3>${property.title}</h3>
+
+            <p>Price: ${property.price}</p>
+
+            <p>Mobile: ${property.agent_mobile}</p>
 
             <button onclick="approveProperty(${property.id})">
                 Approve
@@ -236,22 +251,33 @@
 
         async function approveProperty(propertyId) {
 
-            alert("Approve clicked : " + propertyId);
+            alert("Approve clicked: " + propertyId);
 
             const { error } = await supabaseClient
                 .from("properties")
-                .update({ status: "approved" })
+                .update({
+                    status: "approved"
+                })
                 .eq("id", propertyId);
 
             if (error) {
-                alert(error.message);
+
+                alert(
+                    "Error: " +
+                    error.message
+                );
+
                 return;
             }
 
-            alert("Approved");
+            alert("Property Approved");
 
             loadPendingProperties();
         }
+
+
+        loadPendingProperties();
+
 
 
     </script>

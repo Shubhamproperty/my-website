@@ -13,21 +13,50 @@
         Submit Property
     </h2>
 
-    <input type="text" id="agent_name" placeholder="Agent Name"><br><br>
-    <input type="text" id="agent_mobile" placeholder="Mobile Number"><br><br>
-    <input type="text" id="title" placeholder="Property Title"><br><br>
+
+
+    <input type="file" id="image" multiple><br><br>
     <input type="text" id="price" placeholder="Price"><br><br>
-    <input type="text" id="address" placeholder="Address"><br><br>
-    <input type="text" id="description" placeholder="Description"><br><br>
-    <input type="text" id="location" placeholder="location"><br><br>
-    <input type="text" id="map_url" placeholder=" Paste your Google Map Link Here"><br><br>
 
+    <input type="text" id="title" placeholder="Property Title"><br><br>
+    <input type="text" id="agent_mobile" placeholder="Mobile Number"><br><br>
+    <input type="text" id="map_url" placeholder=" Paste your location Here"><br><br>
 
-    <button type="button" onclick="opengooglemap()">pata dale</button>
+    <button type="button" onclick="submitProperty()">Submit Property</button>
+    <button type="button" onclick="opengooglemap()">Open map</button>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
+        const supabaseUrl =
+            "https://sqavlyzqaxutbwqdytic.supabase.co";
+
+        const supabaseKey =
+            "sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC";
+
+        const SUPABASE_BUCKET =
+            "property- images";
+
+        const supabaseClient =
+            supabase.createClient(
+                supabaseUrl,
+                supabaseKey
+            );
+
+        function opengooglemap() {
+            window.open("https://www.google.com/maps", "_blank");
+        }
+
+
+
+
+
+
+
+
+
+
+
         const sb =
             window.supabase.createClient(
                 "https://sqavlyzqaxutbwqdytic.supabase.co",
@@ -35,25 +64,57 @@
             );
 
         async function submitProperty() {
-            const agent_name = document.getElementById("agent_name").value;
+            alert("1");
+            const imageFile = document.getElementById("image").files[0];
+            alert("2");
+
+
+            if (!imageFile) {
+                alert("Please select an image file.");
+                return;
+            }
             const agent_mobile = document.getElementById("agent_mobile").value;
-            const title = document.getElementById("title").value;
+
             const price = document.getElementById("price").value;
-            const address = document.getElementById("address").value;
-            const description = document.getElementById("description").value;
-            const location = document.getElementById("location").value;
+
+            const title = document.getElementById("title").value;
+
+            const map_url = document.getElementById("map_url").value;
+
+
+            const fileName =
+                Date.now() + "_" + imageFile.name;
+            const { error: uploadError } = await sb.storage.from("property- images").upload(fileName, imageFile);
+            if (uploadError) {
+                alert("Error uploading image: " + uploadError.message);
+                return;
+            }
+            const { data: imageData } =
+                sb.storage.from("property- images").getPublicUrl(fileName);
+            const imageUrl = imageData.publicUrl;
+
+
+            alert(imageUrl)
+
+
+
+
+
+
+
+            alert("imageUrl: " + imageUrl);
 
             const { data, error } = await sb
                 .from("properties")
                 .insert([
                     {
-                        agent_name,
+
                         agent_mobile,
                         title,
                         price,
-                        address,
-                        description,
-                        location,
+                        map_url,
+                        image_urls: imageUrl,
+
                         status: "pending" // Set the status to "pending" for admin approval
                     }
                 ]);
