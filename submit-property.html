@@ -7,24 +7,89 @@
 
 
     <style>
+        /* Submit Property Page */
+
         body {
-
-            font-family: Arial, Helvetica, sans-serif;
-            background: #8b7373;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
             padding: 20px;
-
         }
 
         h2 {
             text-align: center;
-
+            color: #222;
+            margin-bottom: 25px;
         }
 
-        input {
-            width: 100;
-            max-width: 400;
-            padding: 12;
+        form,
+        .submit-container {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
 
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        button:first-of-type {
+            background: #0d6efd;
+            color: white;
+        }
+
+        button:first-of-type:hover {
+            background: #0b5ed7;
+        }
+
+        button:last-of-type {
+            background: #198754;
+            color: white;
+        }
+
+        button:last-of-type:hover {
+            background: #157347;
+        }
+
+        /* Mobile */
+        @media(max-width:600px) {
+
+            body {
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            input[type="text"],
+            input[type="file"] {
+                font-size: 16px;
+            }
+
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
         }
     </style>
 
@@ -92,68 +157,89 @@
             );
 
         async function submitProperty() {
-            alert("1");
-            const imageFile = document.getElementById("image").files[0];
-            alert("2");
 
+            const imageFiles = document.getElementById("image").files;
 
-            if (!imageFile) {
-                alert("Please select an image file.");
+            if (imageFiles.length === 0) {
+                alert("Please select image");
                 return;
             }
-            const agent_mobile = document.getElementById("agent_mobile").value;
 
-            const price = document.getElementById("price").value;
+            const title =
+                document.getElementById("title").value;
 
-            const title = document.getElementById("title").value;
+            const price =
+                document.getElementById("price").value;
 
-            const map_url = document.getElementById("map_url").value;
+            const agent_mobile =
+                document.getElementById("agent_mobile").value;
 
+            const map_url =
+                document.getElementById("map_url").value;
 
-            const fileName =
-                Date.now() + "_" + imageFile.name;
-            const { error: uploadError } = await sb.storage.from("property- images").upload(fileName, imageFile);
-            if (uploadError) {
-                alert("Error uploading image: " + uploadError.message);
-                return;
+            let imageUrls = [];
+
+            for (let i = 0; i < imageFiles.length; i++) {
+
+                const imageFile = imageFiles[i];
+
+                const fileName =
+                    Date.now() + "" + i + "" + imageFile.name;
+
+                const { error: uploadError } =
+                    await sb.storage
+                        .from("property- images")
+                        .upload(fileName, imageFile);
+
+                if (uploadError) {
+
+                    alert(
+                        "Upload Error : " +
+                        uploadError.message
+                    );
+
+                    return;
+                }
+
+                const { data } =
+                    sb.storage
+                        .from("property- images")
+                        .getPublicUrl(fileName);
+
+                imageUrls.push(data.publicUrl);
             }
-            const { data: imageData } =
-                sb.storage.from("property- images").getPublicUrl(fileName);
-            const imageUrl = imageData.publicUrl;
 
-
-            alert(imageUrl)
-
-
-
-
-
-
-
-            alert("imageUrl: " + imageUrl);
-
-            const { data, error } = await sb
-                .from("properties")
-                .insert([
-                    {
-
-                        agent_mobile,
-                        title,
-                        price,
-                        map_url,
-                        image_urls: imageUrl,
-
-                        status: "pending" // Set the status to "pending" for admin approval
-                    }
-                ]);
+            const { error } =
+                await sb
+                    .from("properties")
+                    .insert([
+                        {
+                            title: title,
+                            price: price,
+                            agent_mobile: agent_mobile,
+                            map_url: map_url,
+                            image_urls:
+                                JSON.stringify(imageUrls),
+                            status: "pending"
+                        }
+                    ]);
 
             if (error) {
-                alert("Error submitting property: " + error.message);
+
+                alert(
+                    "Database Error : " +
+                    error.message
+                );
+
             } else {
-                alert("Property submitted successfully!");
+
+                alert(
+                    "Property Submitted Successfully"
+                );
+
+                location.reload();
             }
         }
-
     </script>
 
 
