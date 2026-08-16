@@ -169,7 +169,7 @@
                         .from("properties")
                         .insert([
                             {
-                                contact_number: contactNumber,
+                                agent_mobile: agent - mobile,
                                 title,
                                 image_urls:
                                     JSON.stringify(imageUrls),
@@ -202,23 +202,23 @@
             }
         }
 
-
-
-
-
         async function loadPendingProperties() {
+
+            const container =
+                document.getElementById("pending-properties");
+
+            container.innerHTML = "Loading...";
 
             const { data, error } = await supabaseClient
                 .from("properties")
                 .select("*")
                 .eq("status", "pending");
 
-            const container =
-                document.getElementById("pending-properties");
-
             if (error) {
+
                 container.innerHTML =
-                    "Error: " + error.message;
+                    "Error : " + error.message;
+
                 return;
             }
 
@@ -226,46 +226,79 @@
 
             data.forEach(property => {
 
+                let imagesHtml = "";
+
+                try {
+
+                    if (property.image_urls) {
+
+                        const images =
+                            JSON.parse(property.image_urls);
+
+                        images.forEach(url => {
+
+                            imagesHtml += `
+                    <img src="${url}"
+                    width="120"
+                    style="margin:5px;border-radius:8px;">
+                    `;
+                        });
+                    }
+
+                } catch (e) {
+
+                    console.log("Image Error", e);
+
+                }
+
                 container.innerHTML += `
-        <div style="border:1px solid #ccc;padding:10px;margin:10px 0;">
 
-        <img
-        src="${property.image_urls}"width="200">
-            
+        <div style="
+        border:1px solid #ccc;
+        padding:10px;
+        margin:10px 0;
+        border-radius:10px;">
 
+            <div>
+                ${imagesHtml}
+            </div>
 
             <h3>${property.title}</h3>
 
-            <p>Price: ${property.price}</p>
+            <p>Price : ${property.price}</p>
 
-            <p>Mobile: ${property.agent_mobile}</p>
+            <p>Mobile : ${property.agent_mobile}</p>
+
+            <p>Address : ${property.address}</p>
+
+            <a href="${property.map_url}"
+               target="_blank">
+               View Location
+            </a>
+
+            <br><br>
 
             <button onclick="approveProperty(${property.id})">
                 Approve
             </button>
+
         </div>
         `;
             });
         }
-
-
         async function approveProperty(propertyId) {
 
-            alert("Approve clicked: " + propertyId);
-
-            const { error } = await supabaseClient
-                .from("properties")
-                .update({
-                    status: "approved"
-                })
-                .eq("id", propertyId);
+            const { error } =
+                await supabaseClient
+                    .from("properties")
+                    .update({
+                        status: "approved"
+                    })
+                    .eq("id", propertyId);
 
             if (error) {
 
-                alert(
-                    "Error: " +
-                    error.message
-                );
+                alert(error.message);
 
                 return;
             }
@@ -275,10 +308,8 @@
             loadPendingProperties();
         }
 
-
         loadPendingProperties();
-
-
-
     </script>
 </body>
+
+</html>

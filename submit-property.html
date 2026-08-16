@@ -155,27 +155,19 @@
                 "https://sqavlyzqaxutbwqdytic.supabase.co",
                 "sb_publishable_j3AU3mvrWfDYqvxCZ46Z_A_lUEC2PkC"
             );
-
         async function submitProperty() {
 
             const imageFiles = document.getElementById("image").files;
 
             if (imageFiles.length === 0) {
-                alert("Please select image");
+                alert("Please select at least one image");
                 return;
             }
 
-            const title =
-                document.getElementById("title").value;
-
-            const price =
-                document.getElementById("price").value;
-
-            const agent_mobile =
-                document.getElementById("agent_mobile").value;
-
-            const map_url =
-                document.getElementById("map_url").value;
+            const title = document.getElementById("title").value;
+            const price = document.getElementById("price").value;
+            const agent_mobile = document.getElementById("agent_mobile").value;
+            const map_url = document.getElementById("map_url").value;
 
             let imageUrls = [];
 
@@ -192,12 +184,7 @@
                         .upload(fileName, imageFile);
 
                 if (uploadError) {
-
-                    alert(
-                        "Upload Error : " +
-                        uploadError.message
-                    );
-
+                    alert("Upload Error: " + uploadError.message);
                     return;
                 }
 
@@ -218,33 +205,19 @@
                             price: price,
                             agent_mobile: agent_mobile,
                             map_url: map_url,
-                            image_urls:
-                                JSON.stringify(imageUrls),
+                            image_urls: JSON.stringify(imageUrls),
                             status: "pending"
                         }
                     ]);
 
             if (error) {
-
-                alert(
-                    "Database Error : " +
-                    error.message
-                );
-
+                alert("Database Error: " + error.message);
             } else {
-
-                alert(
-                    "Property Submitted Successfully"
-                );
-
+                alert("Property Submitted Successfully");
                 location.reload();
             }
         }
     </script>
-
-
-
-
 </body>
 
 </html>
