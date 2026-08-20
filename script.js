@@ -15,7 +15,12 @@ async function loadproperties() {
     const { data, error } = await supabaseClient
         .from("properties")
         .select("*")
-        .eq("status", "approved");
+        .eq("status", "approved")
+        .order("id", {
+            ascending:
+                false
+        });
+
     if (error) {
         alert("ERROR = " + error.message);
         return;
@@ -83,8 +88,8 @@ async function loadproperties() {
 
             <br><br>
 
-            <a href="tel:${property.contact_number}">
-                Call: ${property.contact_number}
+            <a href="tel:${property.agent_mobile}">
+                Call: ${property.agent_mobile}
             </a>
             <hr>
 
